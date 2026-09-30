@@ -118,7 +118,10 @@ function makeEngine(stub) {
   ctx.subagents = stub
   ctx.ptcRuntime = makeStubPtcRuntime()
   ctx.sandboxPolicy = makeStubSandboxPolicy()
-  ctx.logger = { warn: () => {} }
+  // Surface the engine's own diagnostics: a swallowed warn hides exactly the
+  // failure detail the offline tier exists to expose (M5: a node-version
+  // mismatch was invisible behind this stub until CI diffed against the dev box).
+  ctx.logger = { warn: (...parts) => console.error('[engine]', ...parts) }
   // Full config: zod defaults only apply through the Cordis plugin flow.
   return new Engine(ctx, {
     provider: ENGINE_PROVIDER,

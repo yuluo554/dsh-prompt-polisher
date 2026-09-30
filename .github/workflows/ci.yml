@@ -16,7 +16,10 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          # The real-engine tier drives @deepseek-ai/dsh-workflow-ptc, which
+          # uses Promise.withResolvers (node >= 22) — node 20 fails every
+          # guest run with UPSTREAM_FAILED (M5 release-gate finding).
+          node-version: 22
       # pnpm version comes from package.json `packageManager`. pnpm 10 skips
       # lifecycle build scripts (esbuild) — expected, binaries resolve through
       # optionalDependencies.

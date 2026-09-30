@@ -36,6 +36,8 @@ Web 设置 → 插件 → Prompt Polisher：
 
 ## 开发
 
+要求 Node ≥ 22（测试的真实引擎层依赖 `@deepseek-ai/dsh-workflow-ptc`，其内部用到 node 22+ 的 `Promise.withResolvers`；CI 同此版本）。
+
 ```sh
 pnpm install
 pnpm lint   # 双 tsc（host + client）0 错
