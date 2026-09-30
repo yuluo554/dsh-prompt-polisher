@@ -1,0 +1,6 @@
+{
+  "ok": true,
+  "optimized": "帮我写一封给供应商的催货邮件，语气坚定但礼貌，附上订单号与交期。",
+  "style": "concise",
+  "modelVia": "session"
+}

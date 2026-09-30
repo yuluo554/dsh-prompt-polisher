@@ -1,0 +1,20 @@
+# dsh-prompt-polisher —— DSH bundle patch
+#
+# `dsh plugin --profile web add ./dsh-prompt-polisher` 会把本包追加进 profile 的
+# dsh.profile.bundles，并把下面的 patch 行叠入配置树（在 dsh-base / web-app 层之后）。
+#
+# M2 起两行：
+# 1. 翻转 web profile 预设里的引擎禁用位（dsh-web-app/presets/standard.patch.yml
+#    的 `- id: workflow-ptc / disabled: true`）。patch 按 id 覆盖行——只动 disabled，
+#    不写 config（引擎默认 config 保持官方值；patch 会整行替换 config）。官方
+#    面向模型的 tool-workflow 保持禁用，本插件与官方工具共存。
+#    兼容 floor：workflow-ptc 行 id 自 0.2.0-rc.1 出现 ⇒ dsh.compatibility.dsh
+#    必须 >=0.2.0-rc.1（package.json 现值已对，M2 复审通过）。
+# 2. insert 本插件行：host 半无强制依赖（web 路由挂为等待 connection 的子插件，
+#    引擎通路挂为等待 workflowEngine+subagents+sessionController 的子插件）。
+- id: workflow-ptc
+  disabled: false
+- insert:
+    - id: dsh-prompt-polisher
+      name: 'dsh-prompt-polisher'
+      config: {}

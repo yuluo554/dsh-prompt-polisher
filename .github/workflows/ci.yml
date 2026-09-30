@@ -1,0 +1,26 @@
+# Offline release-gate CI: typecheck + full offline test suite (node --test).
+# The suite carries the publish guards — 20-case golden benchmark with byte
+# comparison + EOL tripwire, locale completeness, and the desensitize audit —
+# so green here means the release gates held on a clean checkout.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      # pnpm version comes from package.json `packageManager`. pnpm 10 skips
+      # lifecycle build scripts (esbuild) — expected, binaries resolve through
+      # optionalDependencies.
+      - run: corepack enable
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm test

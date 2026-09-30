@@ -1,0 +1,6 @@
+{
+  "ok": true,
+  "optimized": "Summarize the meeting notes into a list of action items, each with a named owner and a due date.",
+  "style": "concise",
+  "modelVia": "session"
+}

@@ -1,0 +1,6 @@
+{
+  "ok": true,
+  "optimized": "[Role] You are the internal comms lead for the platform team.\n[Task] Draft a kickoff announcement for the new billing system rollout.\n[Constraints] Keep it under 200 words; no internal codenames; address all staff.\n[Output format] Subject line + three short paragraphs: what changes, when, where to ask questions.",
+  "style": "structured",
+  "modelVia": "session"
+}

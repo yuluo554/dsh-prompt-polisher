@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>dsh-prompt-polisher 图标候选（M4 定稿挑选）</title>
+<style>
+  body { font-family: "Segoe UI", "Microsoft YaHei", sans-serif; margin: 32px; color: #1f2328; background: #f6f8fa; }
+  h1 { font-size: 20px; } h2 { font-size: 15px; margin: 0 0 8px; }
+  p { max-width: 720px; line-height: 1.6; font-size: 13px; }
+  .card { background: #fff; border: 1px solid #d0d7de; border-radius: 10px; padding: 16px 20px; margin: 16px 0; max-width: 760px; }
+  .row { display: flex; gap: 28px; align-items: center; flex-wrap: wrap; margin-top: 10px; }
+  .cell { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .cell small { color: #656d76; font-size: 11px; }
+  .light { background: #fff; border: 1px solid #d0d7de; border-radius: 8px; padding: 10px 14px; color: #1f2328; }
+  .dark  { background: #0d1117; border-radius: 8px; padding: 10px 14px; color: #e6edf3; }
+  .toolbar { background: #f6f8fa; border: 1px solid #d0d7de; border-radius: 8px; padding: 6px 12px; color: #57606a; display: flex; gap: 8px; align-items: center; }
+  svg { display: block; }
+</style>
+</head>
+<body>
+<h1>dsh-prompt-polisher 图标候选（M4）</h1>
+<p><strong>已定稿（2026-09-30）：C —— 笔尖+单大星</strong>，已内联进 client/PolishButton.tsx 并实机验证服务 bundle。本页留作候选档案。</p>
+<p>三个自绘候选（决策记录 2026-09-29：图标自绘、不复用 WorkBuddy 单魔棒）。每个候选展示 16px（工具行实际尺寸）、24px、48px 与明暗两种底色。</p>
+
+<div class="card">
+  <h2>候选 A — 笔尖 + 双星火（现状，M2 目检方向）</h2>
+  <p>“打磨文字”的直译：斜置钢笔笔尖，右上双星火点缀。细节多、辨识度依赖笔尖形状。</p>
+  <div class="row">
+    <div class="cell"><span class="toolbar">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13.2 L4.1 9.6 L10.6 3.1 A1.55 1.55 0 0 1 12.85 5.35 L6.35 11.85 L2.8 13.05 Z"/><path d="M4.1 9.6 L6.35 11.85"/><path d="M12.9 8.6 L13.35 10.05 L14.8 10.5 L13.35 10.95 L12.9 12.4 L12.45 10.95 L11 10.5 L12.45 10.05 Z" fill="currentColor" stroke="none"/><path d="M10.9 1.2 L11.2 2.2 L12.2 2.5 L11.2 2.8 L10.9 3.8 L10.6 2.8 L9.6 2.5 L10.6 2.2 Z" fill="currentColor" stroke="none"/></svg>
+      <span>输入框工具行</span>
+    </span><small>16px 工具行模拟</small></div>
+    <div class="cell"><span class="light"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13.2 L4.1 9.6 L10.6 3.1 A1.55 1.55 0 0 1 12.85 5.35 L6.35 11.85 L2.8 13.05 Z"/><path d="M4.1 9.6 L6.35 11.85"/><path d="M12.9 8.6 L13.35 10.05 L14.8 10.5 L13.35 10.95 L12.9 12.4 L12.45 10.95 L11 10.5 L12.45 10.05 Z" fill="currentColor" stroke="none"/><path d="M10.9 1.2 L11.2 2.2 L12.2 2.5 L11.2 2.8 L10.9 3.8 L10.6 2.8 L9.6 2.5 L10.6 2.2 Z" fill="currentColor" stroke="none"/></svg></span><small>16px</small></div>
+    <div class="cell"><span class="light"><svg width="24" height="24" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13.2 L4.1 9.6 L10.6 3.1 A1.55 1.55 0 0 1 12.85 5.35 L6.35 11.85 L2.8 13.05 Z"/><path d="M4.1 9.6 L6.35 11.85"/><path d="M12.9 8.6 L13.35 10.05 L14.8 10.5 L13.35 10.95 L12.9 12.4 L12.45 10.95 L11 10.5 L12.45 10.05 Z" fill="currentColor" stroke="none"/><path d="M10.9 1.2 L11.2 2.2 L12.2 2.5 L11.2 2.8 L10.9 3.8 L10.6 2.8 L9.6 2.5 L10.6 2.2 Z" fill="currentColor" stroke="none"/></svg></span><small>24px</small></div>
+    <div class="cell"><span class="light"><svg width="48" height="48" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13.2 L4.1 9.6 L10.6 3.1 A1.55 1.55 0 0 1 12.85 5.35 L6.35 11.85 L2.8 13.05 Z"/><path d="M4.1 9.6 L6.35 11.85"/><path d="M12.9 8.6 L13.35 10.05 L14.8 10.5 L13.35 10.95 L12.9 12.4 L12.45 10.95 L11 10.5 L12.45 10.05 Z" fill="currentColor" stroke="none"/><path d="M10.9 1.2 L11.2 2.2 L12.2 2.5 L11.2 2.8 L10.9 3.8 L10.6 2.8 L9.6 2.5 L10.6 2.2 Z" fill="currentColor" stroke="none"/></svg></span><small>48px</small></div>
+    <div class="cell"><span class="dark"><svg width="24" height="24" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13.2 L4.1 9.6 L10.6 3.1 A1.55 1.55 0 0 1 12.85 5.35 L6.35 11.85 L2.8 13.05 Z"/><path d="M4.1 9.6 L6.35 11.85"/><path d="M12.9 8.6 L13.35 10.05 L14.8 10.5 L13.35 10.95 L12.9 12.4 L12.45 10.95 L11 10.5 L12.45 10.05 Z" fill="currentColor" stroke="none"/><path d="M10.9 1.2 L11.2 2.2 L12.2 2.5 L11.2 2.8 L10.9 3.8 L10.6 2.8 L9.6 2.5 L10.6 2.2 Z" fill="currentColor" stroke="none"/></svg></span><small>24px 暗色</small></div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>候选 B — 双星火「焕亮」（无笔）</h2>
+  <p>纯“焕然一新”意象：一大一小两枚四角星。16px 下形状最简、明暗底都稳，但与“文字”的关联弱。</p>
+  <div class="row">
+    <div class="cell"><span class="toolbar">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.2 2.2 L7.5 6.0 L11.3 7.3 L7.5 8.6 L6.2 12.4 L4.9 8.6 L1.1 7.3 L4.9 6.0 Z" fill="currentColor" stroke="none"/><path d="M12.4 9.2 L13.2 11.4 L15.4 12.2 L13.2 13.0 L12.4 15.2 L11.6 13.0 L9.4 12.2 L11.6 11.4 Z" fill="currentColor" stroke="none" opacity="0.75"/><path d="M12.6 1.4 L13.0 2.6 L14.2 3.0 L13.0 3.4 L12.6 4.6 L12.2 3.4 L11.0 3.0 L12.2 2.6 Z" fill="currentColor" stroke="none" opacity="0.75"/></svg>
+      <span>输入框工具行</span>
+    </span><small>16px 工具行模拟</small></div>
+    <div class="cell"><span class="light"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.2 2.2 L7.5 6.0 L11.3 7.3 L7.5 8.6 L6.2 12.4 L4.9 8.6 L1.1 7.3 L4.9 6.0 Z" fill="currentColor" stroke="none"/><path d="M12.4 9.2 L13.2 11.4 L15.4 12.2 L13.2 13.0 L12.4 15.2 L11.6 13.0 L9.4 12.2 L11.6 11.4 Z" fill="currentColor" stroke="none" opacity="0.75"/><path d="M12.6 1.4 L13.0 2.6 L14.2 3.0 L13.0 3.4 L12.6 4.6 L12.2 3.4 L11.0 3.0 L12.2 2.6 Z" fill="currentColor" stroke="none" opacity="0.75"/></svg></span><small>16px</small></div>
+    <div class="cell"><span class="light"><svg width="24" height="24" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.2 2.2 L7.5 6.0 L11.3 7.3 L7.5 8.6 L6.2 12.4 L4.9 8.6 L1.1 7.3 L4.9 6.0 Z" fill="currentColor" stroke="none"/><path d="M12.4 9.2 L13.2 11.4 L15.4 12.2 L13.2 13.0 L12.4 15.2 L11.6 13.0 L9.4 12.2 L11.6 11.4 Z" fill="currentColor" stroke="none" opacity="0.75"/><path d="M12.6 1.4 L13.0 2.6 L14.2 3.0 L13.0 3.4 L12.6 4.6 L12.2 3.4 L11.0 3.0 L12.2 2.6 Z" fill="currentColor" stroke="none" opacity="0.75"/></svg></span><small>24px</small></div>
+    <div class="cell"><span class="light"><svg width="48" height="48" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.2 2.2 L7.5 6.0 L11.3 7.3 L7.5 8.6 L6.2 12.4 L4.9 8.6 L1.1 7.3 L4.9 6.0 Z" fill="currentColor" stroke="none"/><path d="M12.4 9.2 L13.2 11.4 L15.4 12.2 L13.2 13.0 L12.4 15.2 L11.6 13.0 L9.4 12.2 L11.6 11.4 Z" fill="currentColor" stroke="none" opacity="0.75"/><path d="M12.6 1.4 L13.0 2.6 L14.2 3.0 L13.0 3.4 L12.6 4.6 L12.2 3.4 L11.0 3.0 L12.2 2.6 Z" fill="currentColor" stroke="none" opacity="0.75"/></svg></span><small>48px</small></div>
+    <div class="cell"><span class="dark"><svg width="24" height="24" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.2 2.2 L7.5 6.0 L11.3 7.3 L7.5 8.6 L6.2 12.4 L4.9 8.6 L1.1 7.3 L4.9 6.0 Z" fill="currentColor" stroke="none"/><path d="M12.4 9.2 L13.2 11.4 L15.4 12.2 L13.2 13.0 L12.4 15.2 L11.6 13.0 L9.4 12.2 L11.6 11.4 Z" fill="currentColor" stroke="none" opacity="0.75"/><path d="M12.6 1.4 L13.0 2.6 L14.2 3.0 L13.0 3.4 L12.6 4.6 L12.2 3.4 L11.0 3.0 L12.2 2.6 Z" fill="currentColor" stroke="none" opacity="0.75"/></svg></span><small>24px 暗色</small></div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>候选 C — 笔尖 + 单大星（减法版 A）</h2>
+  <p>保留“笔尖”语义，星火减为一枚大的，16px 下比 A 更清爽、主题更聚焦。</p>
+  <div class="row">
+    <div class="cell"><span class="toolbar">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.6 13.4 L3.7 9.8 L10.2 3.3 A1.55 1.55 0 0 1 12.45 5.55 L5.95 12.05 L2.4 13.25 Z"/><path d="M3.7 9.8 L5.95 12.05"/><path d="M12.2 7.6 L13.25 10.75 L16 11.8 L13.25 12.85 L12.2 16 L11.15 12.85 L8.4 11.8 L11.15 10.75 Z" fill="currentColor" stroke="none" transform="scale(0.9) translate(1 -1.2)"/></svg>
+      <span>输入框工具行</span>
+    </span><small>16px 工具行模拟</small></div>
+    <div class="cell"><span class="light"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.6 13.4 L3.7 9.8 L10.2 3.3 A1.55 1.55 0 0 1 12.45 5.55 L5.95 12.05 L2.4 13.25 Z"/><path d="M3.7 9.8 L5.95 12.05"/><path d="M12.2 7.6 L13.25 10.75 L16 11.8 L13.25 12.85 L12.2 16 L11.15 12.85 L8.4 11.8 L11.15 10.75 Z" fill="currentColor" stroke="none" transform="scale(0.9) translate(1 -1.2)"/></svg></span><small>16px</small></div>
+    <div class="cell"><span class="light"><svg width="24" height="24" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.6 13.4 L3.7 9.8 L10.2 3.3 A1.55 1.55 0 0 1 12.45 5.55 L5.95 12.05 L2.4 13.25 Z"/><path d="M3.7 9.8 L5.95 12.05"/><path d="M12.2 7.6 L13.25 10.75 L16 11.8 L13.25 12.85 L12.2 16 L11.15 12.85 L8.4 11.8 L11.15 10.75 Z" fill="currentColor" stroke="none" transform="scale(0.9) translate(1 -1.2)"/></svg></span><small>24px</small></div>
+    <div class="cell"><span class="light"><svg width="48" height="48" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.6 13.4 L3.7 9.8 L10.2 3.3 A1.55 1.55 0 0 1 12.45 5.55 L5.95 12.05 L2.4 13.25 Z"/><path d="M3.7 9.8 L5.95 12.05"/><path d="M12.2 7.6 L13.25 10.75 L16 11.8 L13.25 12.85 L12.2 16 L11.15 12.85 L8.4 11.8 L11.15 10.75 Z" fill="currentColor" stroke="none" transform="scale(0.9) translate(1 -1.2)"/></svg></span><small>48px</small></div>
+    <div class="cell"><span class="dark"><svg width="24" height="24" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.6 13.4 L3.7 9.8 L10.2 3.3 A1.55 1.55 0 0 1 12.45 5.55 L5.95 12.05 L2.4 13.25 Z"/><path d="M3.7 9.8 L5.95 12.05"/><path d="M12.2 7.6 L13.25 10.75 L16 11.8 L13.25 12.85 L12.2 16 L11.15 12.85 L8.4 11.8 L11.15 10.75 Z" fill="currentColor" stroke="none" transform="scale(0.9) translate(1 -1.2)"/></svg></span><small>24px 暗色</small></div>
+  </div>
+</div>
+
+<p style="color:#656d76">挑选后动作：把所选 SVG 内联进 client/PolishButton.tsx 的 PolishIcon（替换同函数体），重跑 lint/test + 实机目检一次按钮渲染。</p>
+</body>
+</html>

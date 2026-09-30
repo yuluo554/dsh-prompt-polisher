@@ -1,0 +1,6 @@
+{
+  "ok": true,
+  "optimized": "Write a firm but polite overdue-delivery email: state the PO number, the original deadline, and request a firm new delivery date.",
+  "style": "concise",
+  "modelVia": "session"
+}

@@ -1,0 +1,6 @@
+{
+  "ok": true,
+  "optimized": "处理含特殊序列的文本：反引号 `x`、插值 ${danger}、双引号 \"引号\" 均按字面保留；保留换行结构与 emoji 🚀。",
+  "style": "concise",
+  "modelVia": "session"
+}

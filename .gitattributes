@@ -1,0 +1,5 @@
+# dsh-prompt-polisher: freeze LF across every platform (autocrlf=true on the
+# dev Windows box must not turn golden snapshots / fixture bytes into CRLF —
+# see plan/04 and the M5 release gate). Golden snapshots land in M4; the
+# attribute ships now so the first frozen byte is already safe.
+* text=auto eol=lf

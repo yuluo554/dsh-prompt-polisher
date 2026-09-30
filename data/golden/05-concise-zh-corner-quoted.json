@@ -1,0 +1,6 @@
+{
+  "ok": true,
+  "optimized": "把这份周报压缩成三句话：第一句本周进展，第二句风险与对策，第三句下周计划。",
+  "style": "concise",
+  "modelVia": "session"
+}

@@ -1,0 +1,6 @@
+{
+  "ok": true,
+  "optimized": "已按区域拆分本季度销售数据并标注环比变化：整体增长平稳，华东区环比下降明显，需重点核查波动原因后输出分析结论。",
+  "style": "concise",
+  "modelVia": "session"
+}
