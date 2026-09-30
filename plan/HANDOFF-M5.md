@@ -104,3 +104,47 @@ npm pack --dry-run              # 81 文件 45.5KB；无 src/test/scripts/plan �
 - 本项目 `plan/00-06`（重点 04 基准口径 / 05 §M5 / 06 发布门 checklist 与 M4 决策行）+ `plan/HANDOFF-M3.md`（M3 决策上下文）。
 - skill：`dsh-plugin-dev`（必读全文；M5 重点 §10 发布与上架 + §8 环境坑）；`ai-tool-project-sprint` 阶段 7（脱敏四步/干净环境/EOL 门/发布链时序纪律）。
 - M4 新文件速查：`scripts/bench-cases.mjs`（用例表）、`scripts/seed-fixtures.mjs`（播种）、`scripts/bench-runner.mjs`（执行器）、`scripts/update-golden.mjs`（golden 重生成）、`scripts/desensitize-audit.mjs`（脱敏）、`test/bench.test.js`（重写）、`test/locale.test.js`、`test/desensitize.test.js`、`data/**`（fixtures+golden+台账）、`README.md`、`LICENSE`、`.gitignore`、`plan/icon-candidates.html`；改动文件：`src/config.ts`（+clientDiagnostics）、`src/web.ts`（debug 门）、`src/index.ts`（thunk 接线）、`client/ApiTestPanel.tsx`（诊断复选框）、`client/i18n.ts`（38 键+措辞对齐）、`package.json`（files+data）、`test/rpc.test.js`（诊断门测试）、`test/client-bundle.test.js`（词典 38+复选框断言）。
+
+---
+
+## M5 执行实录（2026-09-30，本文件已随 plan/ 入仓——路径均相对仓库根）
+
+### 已完成（发布门 5/8 项打勾，详见 plan/06 checklist 与 M5 决策行三行）
+
+- **compatibility floor 终审 ✅**：floor `>=0.2.0-rc.1` 与 patch 行 id（workflow-ptc 自 0.2.0-rc.1 出现）+ schemastery 3.18.4 精确 pin（registry 可解析）实况一致；M4 未动引擎面，复核无漂移。
+- **GitHub 建仓 ✅**：https://github.com/yuluo554/dsh-prompt-polisher （public）。**仓库根 = 包目录，`plan/` 整体移入包内**（单一事实源；README 深链随之成立；后续 HANDOFF 在本文件续写）。README `<owner>` 回填 `yuluo554`；`.npmrc`（npmmirror）不入仓（防劫持 CI 安装与 npm publish）；新增 `.github/workflows/ci.yml`；推送走 SSH（gh token 无 workflow scope，HTTPS 推必拒——skill §10 先验命中）。
+- **CI ✅（含一次实修）**：首跑（ubuntu+node20）5 败全在真实引擎层——`dsh-workflow-ptc` 用 `Promise.withResolvers()`（node 22+ API；`dsh-subagent` 同 4 处）→ node20 下 guest 每次 `agent()` 必 TypeError → 全映射 UPSTREAM_FAILED。修：CI 升 node22 + `engines` `>=20`→`>=22` + 测试桩 logger 透传（原 `{warn:()=>{}}` 掩盖引擎自带诊断）。复跑 **green**（run 36668550583）。
+- **脱敏 ✅**：审计三跑全 0（预 init 含 plan/ ×1、git-aware staged 集 ×1、终树 ×1；plan/ 首扫零命中）；step4 判定**无需历史重写**（全新仓库，历史仅 clean commit）。
+- **干净环境验证 ✅**：GitHub 全新 clone 两轮（5bf8d97、89f1ef8）+ 隔离 store + lint 0 错 + **71/71**；autocrlf=true 下 golden 抽样 0 CR（.gitattributes 实证生效）。
+- **pack 终清点 ✅**：81 文件 45.5KB 与 M4 预清点同口径，仅 LICENSE/README/patch/lib/data，无泄漏。
+
+### 阻塞移交：npm 发包（链首，本机未登录）
+
+`npm whoami` = ENEEDAUTH（npmmirror 与 npmjs 均无凭据）。按既定纪律早停，**下游对外宣称（awesome-dsh PR）一律暂停**。用户执行：
+
+```sh
+npm login                     # 浏览器完成 npmjs 认证
+cd D:\ProgramData\zcode\dsh-2\dsh-prompt-polisher
+npm publish --registry=https://registry.npmjs.org --access public
+# 包目录 .npmrc 指向 npmmirror（不可发包），publish 必须显式 --registry；
+# 发包成功后：GitHub 全新 clone 复核全量测试 + 终验三扫（plan/06 末两项）
+```
+
+### 待用户确认批次（确认即执行）
+
+1. **tag + release**：`v0.1.0`（release notes 草稿：一键优化/双模型通路/风格切换/竞态保护/三道发布守门/限制，README 为准）。
+2. **GitHub topics**：`dsh-plugin` + `deepseek-harness` + `prompt-polisher`（官方发现渠道靠 `dsh-plugin`）。
+3. **awesome-dsh PR**：收录标准 = `dsh plugin add dsh-prompt-polisher` 可装 + 描述属实 + 有人维护——**必须在 npm 发包成功之后**。
+
+### M5 新增既定口径
+
+- **仓库布局**：仓库根 = 包根；plan/ 入仓；`.npmrc` 永不入仓。
+- **engines `>=22` + CI node22**：引擎包（dsh-workflow-ptc/dsh-subagent）真实底线；node 20 下真实引擎层必挂。
+- **测试桩 logger 透传**：offline 层不得吞引擎 warn（诊断可见性）。
+- **测试 71/71、locale 38 键 ×2、golden 冻结**等 M4 口径全部继续有效。
+
+### M5 新增环境坑
+
+- **「Windows 绿 CI 红」先查 node 版本差**：本机 node24 vs CI node20——引擎包用 node 22+ API 时全量真实引擎用例必挂，且 UPSTREAM_FAILED 吞掉真实 TypeError（logger 透传后才可见）。
+- **ugrep 正则计数不可单信**：`grep -c -E "\.(ts|…)$"` 对含 `.d.ts` 的行报 0——发布门清点以直接文件列表复核为准。
+- **Edit 锚点含标题行时勿只替换标题**（本次误删「## 待用户确认的开放项」标题已修复）——old_string 以标题作唯一锚时先确认替换面。
