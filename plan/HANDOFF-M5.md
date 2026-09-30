@@ -124,11 +124,11 @@ npm pack --dry-run              # 81 文件 45.5KB；无 src/test/scripts/plan �
 
 **npmjs 2026 安全策略实录（以后发包都会遇到）**：包目录 `.npmrc` 指向 npmmirror 会把 `npm login` 劫持到 cnpm 注册页（cnpm 只读不可发包）；npmjs 正在淘汰 TOTP，Enable 2FA 只给 Passkey 流程（社区 + docs 确认）；本机路线 = 先配 Windows Hello PIN → Enable 2FA → 弹窗选「此设备」→ 存本机 passkey（recovery codes 务必保存）；CLI 发包 = 终端打印 URL → 浏览器打开 PIN 确认 → 终端自动继续。publish 必须显式 `--registry=https://registry.npmjs.org`。
 
-### 待用户确认批次（确认即执行）
+### 收尾批次 ✅（2026-09-30 用户确认三项全选）
 
-1. **tag + release**：`v0.1.0`（release notes 草稿：一键优化/双模型通路/风格切换/竞态保护/三道发布守门/限制，README 为准）。
-2. **GitHub topics**：`dsh-plugin` + `deepseek-harness` + `prompt-polisher`（官方发现渠道靠 `dsh-plugin`）。
-3. **awesome-dsh PR**：收录标准 = `dsh plugin add dsh-prompt-polisher` 可装 + 描述属实 + 有人维护——**必须在 npm 发包成功之后**。
+1. **tag + release ✅**：`v0.1.0` → https://github.com/yuluo554/dsh-prompt-polisher/releases/tag/v0.1.0 （notes：特性/安装/质量门/npm 链接）。
+2. **topics ✅**：`dsh-plugin` + `deepseek-harness` + `prompt-polisher`（`dsh-plugin` = 官方发现渠道）。
+3. **awesome-dsh PR**：投稿按其规则 = 单文件 `data/plugins/yuluo554__dsh-prompt-polisher.yml`（category `ui`，双语描述）；fork `yuluo554/awesome-dsh-plugin` 分支 `add-dsh-prompt-polisher` 已推（79dfd2f）。**其 CI 自动检查「被收录仓库满 1 天」**——PR 定时 2026-10-01 13:05 自动发起（含幂等检查：已有 PR 不重复开；门槛不足则不开）。
 
 ### M5 新增既定口径
 
