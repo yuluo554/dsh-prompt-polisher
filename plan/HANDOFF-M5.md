@@ -118,17 +118,11 @@ npm pack --dry-run              # 81 文件 45.5KB；无 src/test/scripts/plan �
 - **干净环境验证 ✅**：GitHub 全新 clone 两轮（5bf8d97、89f1ef8）+ 隔离 store + lint 0 错 + **71/71**；autocrlf=true 下 golden 抽样 0 CR（.gitattributes 实证生效）。
 - **pack 终清点 ✅**：81 文件 45.5KB 与 M4 预清点同口径，仅 LICENSE/README/patch/lib/data，无泄漏。
 
-### 阻塞移交：npm 发包（链首，本机未登录）
+### npm 发包 ✅（2026-09-30，用户完成认证后发包）
 
-`npm whoami` = ENEEDAUTH（npmmirror 与 npmjs 均无凭据）。按既定纪律早停，**下游对外宣称（awesome-dsh PR）一律暂停**。用户执行：
+`dsh-prompt-polisher@0.1.0` 已上线 npmjs（`npm view` 直读验证：maintainer **jadeluo**，shasum `8b9789b…497e` 与终清点**逐字节一致** = 发布的就是验证过的产物；keywords 含 `dsh-plugin`）。**发布后复核全过**：GitHub 全新 clone install+lint+**71/71**；终验三扫 113 文件全 0；历史穷举（3 commit 全部 add 文件集）违禁文件名 0——历史重写最终确认无需。
 
-```sh
-npm login                     # 浏览器完成 npmjs 认证
-cd D:\ProgramData\zcode\dsh-2\dsh-prompt-polisher
-npm publish --registry=https://registry.npmjs.org --access public
-# 包目录 .npmrc 指向 npmmirror（不可发包），publish 必须显式 --registry；
-# 发包成功后：GitHub 全新 clone 复核全量测试 + 终验三扫（plan/06 末两项）
-```
+**npmjs 2026 安全策略实录（以后发包都会遇到）**：包目录 `.npmrc` 指向 npmmirror 会把 `npm login` 劫持到 cnpm 注册页（cnpm 只读不可发包）；npmjs 正在淘汰 TOTP，Enable 2FA 只给 Passkey 流程（社区 + docs 确认）；本机路线 = 先配 Windows Hello PIN → Enable 2FA → 弹窗选「此设备」→ 存本机 passkey（recovery codes 务必保存）；CLI 发包 = 终端打印 URL → 浏览器打开 PIN 确认 → 终端自动继续。publish 必须显式 `--registry=https://registry.npmjs.org`。
 
 ### 待用户确认批次（确认即执行）
 
@@ -146,5 +140,6 @@ npm publish --registry=https://registry.npmjs.org --access public
 ### M5 新增环境坑
 
 - **「Windows 绿 CI 红」先查 node 版本差**：本机 node24 vs CI node20——引擎包用 node 22+ API 时全量真实引擎用例必挂，且 UPSTREAM_FAILED 吞掉真实 TypeError（logger 透传后才可见）。
+- **npmjs 2026 发布链坑**：`.npmrc` 镜像指向会把 login 劫持到 cnpm（只读）；TOTP 淘汰 → 新账号 2FA 只有 Passkey；Windows 没配 Hello PIN 时弹窗连「此设备」选项都不出现；CLI publish 走 URL 网页确认而非终端输码。
 - **ugrep 正则计数不可单信**：`grep -c -E "\.(ts|…)$"` 对含 `.d.ts` 的行报 0——发布门清点以直接文件列表复核为准。
 - **Edit 锚点含标题行时勿只替换标题**（本次误删「## 待用户确认的开放项」标题已修复）——old_string 以标题作唯一锚时先确认替换面。
