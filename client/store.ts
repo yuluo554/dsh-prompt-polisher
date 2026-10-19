@@ -11,8 +11,15 @@
 
 /** One settled optimization for the session's composer. */
 export interface PolishBarState {
-  /** Text to restore on 还原 (the click-time draft). */
+  /** Text to restore on 还原上一步 (the click-time draft). */
   original: string
+  /**
+   * First click-time draft of the session (the user's hand-typed prompt),
+   * anchored by the first optimization and kept across later ones so
+   * 还原首次 can always return to it. Absent on records written before the
+   * two-restore feature (callers fall back to `original`).
+   */
+  firstDraft?: string
   /** Scrubbed model output. */
   optimized: string
   /** Style that produced `optimized`. */

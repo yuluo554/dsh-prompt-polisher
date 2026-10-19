@@ -1,10 +1,16 @@
 # dsh-prompt-polisher
 
+[![CI](https://github.com/yuluo554/dsh-prompt-polisher/actions/workflows/ci.yml/badge.svg)](https://github.com/yuluo554/dsh-prompt-polisher/actions/workflows/ci.yml)
+[![npm version](https://img.shields.io/npm/v/dsh-prompt-polisher.svg)](https://www.npmjs.com/package/dsh-prompt-polisher)
+[![license](https://img.shields.io/npm/l/dsh-prompt-polisher.svg)](https://github.com/yuluo554/dsh-prompt-polisher/blob/main/LICENSE)
+
 DeepSeek Harness (dsh) 桌面端插件：在聊天输入框工具行加一枚「优化提示词」按钮，点击后把输入框里的草稿交给模型改写，优化结果回填输入框，随时可继续编辑、可一键还原。交互形态对标 WorkBuddy 内置的提示词优化，图标自绘、不复用。
+
+![优化提示词按钮与状态条](https://raw.githubusercontent.com/yuluo554/dsh-prompt-polisher/main/docs/preview.png)
 
 ## 特性
 
-- **一键优化**：`conversation.input.right` 席位按钮，读取当前草稿 → 模型改写 → 回填；原文保存在插件态，状态条（`conversation.input.dock`）一键还原。
+- **一键优化**：`conversation.input.right` 席位按钮，读取当前草稿 → 模型改写 → 回填；原文保存在插件态，状态条（`conversation.input.dock`）提供两个还原入口：**还原上一步**（这次优化前的草稿）与**还原首次**（本会话第一次优化时手打的草稿）。
 - **双模型通路**：默认走会话模型（dsh workflow 引擎 `agent()` 单代理，零配置开箱可用）；也可在设置里配置 OpenAI 兼容独立 API（base URL / 模型 / 密钥）直连，**密钥只存宿主侧，绝不下发浏览器**。
 - **风格切换**：`concise`（精炼明确）/ `structured`（结构化增强）两预设，按钮旁菜单选择、localStorage 记忆默认风格；支持整段自定义模板覆盖（必须含 `{draft}` 占位符）。
 - **竞态保护**：优化期间你继续打字 → 回填前弹出「替换 / 放弃」，绝不静默覆盖；会话切换自动取消在途请求。
@@ -16,7 +22,7 @@ DeepSeek Harness (dsh) 桌面端插件：在聊天输入框工具行加一枚「
 dsh plugin --profile web add dsh-prompt-polisher
 ```
 
-要求 dsh `>=0.2.0-rc.1`（兼容性 floor 同此值）。插件会自动把 workflow 引擎（`workflow-ptc`）从 web profile 的默认禁用中翻转启用——这是会话模型优化通路的前提。
+要求 dsh `^0.2.0-rc.1`（即 0.2.x，含预发布版本）。**真实门槛由 `package.json` 的 `peerDependencies` 表达**，dsh 启动时据此校验；不满足会拒绝加载。已验证版本：`0.2.0-rc.1`、`0.2.1-rc.2`；0.3 不在本版本支持范围。插件会自动把 workflow 引擎（`workflow-ptc`）从 web profile 的默认禁用中翻转启用——这是会话模型优化通路的前提。
 
 ## 配置
 

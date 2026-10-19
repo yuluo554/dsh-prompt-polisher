@@ -246,11 +246,16 @@ export function PolishButton({ useInput, inputActions, sessionId, t }: PolishBut
         }
         // R6: re-read the LIVE composer state at response time.
         const live = inputRef.current
+        // 还原首次 anchor: keep the first click-time draft of the session
+        // (the user's hand-typed prompt) across later optimizations.
+        const prior = polishStore.get(sessionId)
+        const firstDraft = prior?.firstDraft ?? prior?.original ?? original
         const decision = decideBackfill({ rev0, revNow: live.draftRev, draftNow: live.draft, original })
         if (decision.kind === 'race') {
           // User typed behind the request: offer 替换/放弃 in the bar.
           polishStore.set(sessionId, {
             original,
+            firstDraft,
             optimized: result.optimized,
             style: result.style,
             phase: 'race',
@@ -262,6 +267,7 @@ export function PolishButton({ useInput, inputActions, sessionId, t }: PolishBut
         inputActions.setDraft(result.optimized)
         polishStore.set(sessionId, {
           original,
+          firstDraft,
           optimized: result.optimized,
           style: result.style,
           phase: 'applied',

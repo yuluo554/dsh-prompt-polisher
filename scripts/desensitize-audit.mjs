@@ -9,8 +9,8 @@
  *   1. .gitignore coverage + forbidden filenames (.env / *.key / secret / token)
  *   2. content scan of every text file (keys, phone/id numbers, personal
  *      paths, internal domains, emails)
- *   3. binary files must be sha256-allowlisted (none expected — icons are
- *      inline SVG)
+ *   3. binary files must be sha256-pinned (BINARY_ALLOWLIST; the only entry
+ *      is the README preview screenshot — inline SVG icons need no pinning)
  *   4. history rewrite applies only once the repo is PUSHED (M5, plan/06);
  *      out of scope for the working-tree audit, printed as a note.
  *
@@ -38,6 +38,20 @@ const EXCLUDED_DIRS = new Set(['node_modules', '.git', 'lib', '.clean-store'])
  */
 const ALLOWLIST = [
   // Example shape: { file: /^pnpm-lock\.yaml$/, pattern: 'phone', reason: '...' },
+]
+
+/**
+ * Binary files are human-unreadable for step 2, so instead of scanning them
+ * we pin their sha256: any edit changes the hash and re-enters review, and a
+ * pinned entry without a reason is a bug. Keep this list minimal and justified
+ * (the only entry is the README preview screenshot).
+ */
+const BINARY_ALLOWLIST = [
+  {
+    file: /^docs\/preview\.png$/,
+    sha256: '2f6000a76b76c4f024961abd091a3bf4aa1c292f482c544c6109f483a457a9d2',
+    reason: 'README preview: real 0.2.1-rc.2 UI screenshot (button + status bar); no personal data, hash pins the reviewed bytes',
+  },
 ]
 
 /** Step 1: every line the .gitignore must carry. */
@@ -92,6 +106,7 @@ function listFiles() {
 
 const failures = []
 const tolerated = []
+const pinnedHits = []
 const files = listFiles()
 
 // ---- Step 1: gitignore coverage + forbidden filenames --------------------
@@ -122,7 +137,9 @@ for (const rel of files) {
   const isBinary = !assumeText && bytes.subarray(0, 8192).includes(0)
   if (isBinary) {
     const sha = createHash('sha256').update(bytes).digest('hex')
-    failures.push(`step3: binary file not in the sha256 allowlist: ${rel} (sha256 ${sha})`)
+    const pinned = BINARY_ALLOWLIST.find((entry) => entry.file.test(rel) && entry.sha256 === sha)
+    if (pinned !== undefined) pinnedHits.push({ rel, reason: pinned.reason })
+    else failures.push(`step3: binary file not in the sha256 allowlist: ${rel} (sha256 ${sha})`)
     continue
   }
   const text = bytes.toString('utf8')
@@ -143,6 +160,7 @@ for (const rel of files) {
 
 // ---- Report ---------------------------------------------------------------
 for (const hit of tolerated) console.log(`  [allowlisted] ${hit.pattern} at ${hit.file}:${hit.line} — ${hit.reason}`)
+for (const hit of pinnedHits) console.log(`  [sha256-pinned] binary ${hit.rel} — ${hit.reason}`)
 if (failures.length > 0) {
   console.error(`DESENSITIZE_AUDIT_FAILED (${failures.length} finding(s)):`)
   for (const failure of failures) console.error(`  ${failure}`)

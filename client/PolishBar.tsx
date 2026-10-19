@@ -87,10 +87,21 @@ export function PolishBar({ sessionId, inputActions, t }: PolishBarProps) {
     inputActions.setDraft(state.original)
     polishStore.clear(sessionId)
   }
+  // 还原首次: the session's first hand-typed draft. Hidden while it is the
+  // same text as 还原上一步 (only one optimization so far, or no anchor).
+  const firstDraft = state.firstDraft ?? state.original
+  const showRestoreFirst = firstDraft !== state.original
+  const onRestoreFirst = () => {
+    inputActions.setDraft(firstDraft)
+    polishStore.clear(sessionId)
+  }
   return (
     <div style={barStyle} role="status">
       <span>{t('bar.optimized', { style: styleLabel })}</span>
       <button type="button" style={linkButton} onClick={onRestore}>{t('bar.restore')}</button>
+      {showRestoreFirst
+        ? <button type="button" style={linkButton} onClick={onRestoreFirst}>{t('bar.restoreFirst')}</button>
+        : null}
     </div>
   )
 }

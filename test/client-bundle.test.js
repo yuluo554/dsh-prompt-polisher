@@ -107,7 +107,7 @@ test('built client bundle wires ALL composer/settings seats over the frozen inje
   assert.deepEqual(dictionaries.map((item) => item.locale).sort(), ['en', 'zh'])
   for (const item of dictionaries) {
     assert.equal(item.ns, 'dsh-prompt-polisher')
-    assert.equal(item.keys, 38, 'M4 dictionary size (button + bar + style labels + menu + api hint + settings panel + config form + diagnostics toggle)')
+    assert.equal(item.keys, 39, 'M4 dictionary size + 0.2.0 two-restore labels (button + bar + style labels + menu + api hint + settings panel + config form + diagnostics toggle)')
   }
 
   const button = slotsRegistered.find((entry) => entry.options.id === 'prompt-polisher')
@@ -198,9 +198,21 @@ test('bar renders null with no record; "applied" shows 已优化+还原; "race" 
     assert.match(applied.html, /pp:bar\.optimized/)
     assert.match(applied.html, /pp:style\.concise/, 'the style label rides in the translate params')
     assert.match(applied.html, /pp:bar\.restore/)
+    assert.ok(!applied.html.includes('pp:bar.restoreFirst'), 'no distinct first draft → only 还原上一步')
     assert.ok(!applied.html.includes('pp:bar.race'))
   } finally {
     store.clear('sess-bar-applied')
+  }
+
+  store.set('sess-bar-twice', {
+    original: '第一次优化后', firstDraft: '手打原文', optimized: '第二次优化后', style: 'concise', phase: 'applied',
+  })
+  try {
+    const twice = renderSeat(component, { sessionId: 'sess-bar-twice' })
+    assert.match(twice.html, /pp:bar\.restore/, '还原上一步 stays')
+    assert.match(twice.html, /pp:bar\.restoreFirst/, 'a distinct first draft offers 还原首次')
+  } finally {
+    store.clear('sess-bar-twice')
   }
 
   store.set('sess-bar-race', { original: '原文', optimized: '优化后', style: 'structured', phase: 'race' })
