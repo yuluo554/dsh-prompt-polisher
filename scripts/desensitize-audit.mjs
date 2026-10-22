@@ -61,13 +61,55 @@ const REQUIRED_GITIGNORE = [/^\.env$/m, /^\.env\.\*$/m, /node_modules\//, /\*\*_
 const FORBIDDEN_FILE_RE = [/^\.env(\.|$)/i, /\.key$/i, /secret/i, /token/i]
 
 /** Step 2 patterns. Hex/alnum lookarounds keep hash runs (lockfile, base64)
- * from false-positive as phone/id numbers. */
+ * from false-positive as phone/id numbers.
+ *
+ * ---- 2026-10-22 T4：个人路径正则扩写 ----
+ * 原版只有两态：`C:\Users\<name>` 与 unix 的 `/home|/Users/<name>`。
+ * 实测本仓入库的交接物里有 14 处 `<D>:\ProgramData\zcode\dsh-2\...`，
+ * 审计照打 DESENSITIZE_AUDIT_OK —— 门绿着，路径已经公开。
+ *
+ * 扩写的两条约束（都是实测踩出来的）：
+ *  1) 必须有 `(?<![A-Za-z0-9])` 前置断言。否则 URL 里的 `https:/`、`host:443`
+ *     这类子串会被当成盘符路径（在 HWS-formal-math-navigator 上实测：
+ *     松口径 2 文件 7 命中，全是 https）。
+ *  2) **泛化兜底不能太宽**。PyInstaller / Qt 上游二进制会带上**别人的构建机路径**
+ *     （`C:\Users\runneradmin\...`），`C:\Windows\Fonts\...` 是系统字体，
+ *     `<user>` / `...` 是我们自己已脱敏的占位写法 —— 这三类一律不报，
+ *     否则门会因为成片误报而被人关掉（同仓 labor-compliance 的
+ *     `tools/release_assets.py` docstring 记了同一条教训）。
+ *
+ * 所以分两条：
+ *  - personalPath：盘符 + **敏感根目录名**（Users/ProgramData/work/projects/Documents/Desktop）。
+ *    这条语义最准，D:\ProgramData 就是它抓到的。
+ *  - driveAbsPath：泛化兜底（任意盘符 + ≥2 段），但排除占位符与系统目录。
+ *    它存在的理由是无法穷举敏感目录名（形如 `<盘符>:\a\b` 这类短路径）。
+ */
+const PATH_TAIL = String.raw`[^\s\`)\]"'|]*`
+const PERSONAL_PATH_RE = new RegExp(
+  String.raw`(?<![A-Za-z0-9])[A-Za-z]:[\\/]{1,2}(?:Users|ProgramData|work|projects|Documents|Desktop)[\\/]${PATH_TAIL}`
+  + String.raw`|(?<![A-Za-z0-9])\/(?:home|Users)\/[A-Za-z0-9._-]+\/[^\s\`)\]"'|]*`,
+)
+const DRIVE_ABS_PATH_RE = new RegExp(
+  String.raw`(?<![A-Za-z0-9])[A-Za-z]:[\\/]{1,2}[A-Za-z0-9_.\u4e00-\u9fa5-]+[\\/]${PATH_TAIL}`,
+)
+
+/** 判一条命中是不是「已脱敏的占位 / 系统目录 / 别人的构建机」——是则不报。 */
+function isBenignPathHit(text) {
+  if (/<[^>]*>/.test(text)) return true // <user> / <repo> / <盘符>
+  if (/(?:^|[\\/])\.\.\.(?:[\\/]|$)/.test(text)) return true // D:\ProgramData\...
+  if (/:\s*\.\.\./.test(text)) return true
+  if (/^[A-Za-z]:[\\/]{1,2}(?:Windows|Program Files)/i.test(text)) return true
+  if (/[\\/]Users[\\/](?:runneradmin|runner|Public|Default|All Users)\b/i.test(text)) return true
+  return false
+}
+
 const PATTERNS = [
   { name: 'apiKey', re: /sk-[A-Za-z0-9]{20,}/ },
   { name: 'keyAssign', re: /\b(api[_-]?key|secret|token|password|passwd)\b["']?\s*[:=]\s*["'][^"'\s]{16,}["']/i },
   { name: 'phone', re: /(?<![0-9A-Za-z])1[3-9]\d{9}(?![0-9A-Za-z])/ },
   { name: 'idNumber', re: /(?<![0-9A-Za-z])\d{17}[0-9Xx](?![0-9A-Za-z])/ },
-  { name: 'personalPath', re: /C:[\\/]+Users[\\/]+[A-Za-z0-9._-]+|(?<![A-Za-z0-9])\/(?:home|Users)\/[A-Za-z0-9._-]+/ },
+  { name: 'personalPath', re: PERSONAL_PATH_RE, benign: isBenignPathHit },
+  { name: 'driveAbsPath', re: DRIVE_ABS_PATH_RE, benign: isBenignPathHit },
   { name: 'internalDomain', re: /\b[a-z0-9-]+\.(?:internal|corp|lan)\b/i },
   { name: 'email', re: /[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,}/ },
 ]
@@ -144,16 +186,21 @@ for (const rel of files) {
   }
   const text = bytes.toString('utf8')
   const lines = text.split(/\r?\n/)
-  for (const { name, re } of PATTERNS) {
+  for (const { name, re, benign } of PATTERNS) {
     for (let index = 0; index < lines.length; index += 1) {
-      if (re.test(lines[index])) {
-        const hit = { file: rel, pattern: name, line: index + 1 }
-        const allowed = ALLOWLIST.find((entry) => entry.file instanceof RegExp
-          ? entry.file.test(rel) && entry.pattern === name
-          : entry.file === rel && entry.pattern === name)
-        if (allowed !== undefined) tolerated.push({ ...hit, reason: allowed.reason })
-        else failures.push(`step2: ${name} hit at ${rel}:${index + 1}`)
-      }
+      const line = lines[index]
+      if (!re.test(line)) continue
+      // 同一行可能有多处命中：逐个判定，避免「一处占位」放过整行真路径
+      const reGlobal = new RegExp(re.source, re.flags.includes('g') ? re.flags : `${re.flags}g`)
+      const found = [...line.matchAll(reGlobal)].map((m) => m[0])
+      const real = benign === undefined ? found : found.filter((hit) => !benign(hit))
+      if (real.length === 0) continue
+      const hit = { file: rel, pattern: name, line: index + 1, sample: real[0].slice(0, 60) }
+      const allowed = ALLOWLIST.find((entry) => entry.file instanceof RegExp
+        ? entry.file.test(rel) && entry.pattern === name
+        : entry.file === rel && entry.pattern === name)
+      if (allowed !== undefined) tolerated.push({ ...hit, reason: allowed.reason })
+      else failures.push(`step2: ${name} hit at ${rel}:${index + 1} — ${hit.sample}`)
     }
   }
 }

@@ -82,7 +82,7 @@
 ## M3 验证命令实录（复跑即可复验）
 
 ```sh
-cd D:\ProgramData\zcode\dsh-2\dsh-prompt-polisher
+cd <repo>
 pnpm lint && pnpm test          # 双 tsc 0 错；64/64
 cd .. && dsh plugin --profile web add ./dsh-prompt-polisher   # 已装（link），改动后重跑
 dsh --profile web --dump-config | grep -A2 "id: workflow-ptc"  # 根层 disabled:false；tool-workflow disabled:true
@@ -103,5 +103,5 @@ dsh --profile web --no-open --port 0 &                          # ~16s，日志 
 - 本项目 `plan/00-06`（重点 02 架构 / 03 详设 / 05 里程碑）+ `plan/HANDOFF-M2.md`（M2 决策上下文）+ `plan/06` M3 决策行（M3 全部决策已回写）。
 - skill：`dsh-plugin-dev`（必读全文；本里程碑新增实证：§5 client 半的 keyed 席位注册、§3 patch 词汇表的"覆盖行替换整个 config"语义）。
 - 官方 config 形态权威样本：全局 dsh 包 `node_modules/@deepseek-ai/dsh-web-search-deepseek/lib/index.js`（Config/apply/credentials 全套）。
-- 可运行参照：`D:\ProgramData\zcode\dsh-1\dsh-pipeline`（真实引擎测试桩形态）。
+- 可运行参照：`<dsh-pipeline-repo>`（真实引擎测试桩形态）。
 - 本包 M3 新文件速查：`src/config.ts`（Config schema+快照）、`src/api-dispatch.ts`（API leg+tester）、`src/router.ts`（分派）、`client/style-pref.ts`、`client/ApiTestPanel.tsx`；改动文件：`src/templates.ts`（overrides）、`src/dispatch.ts`（registry 拆分）、`src/optimize.ts`（modelVia 扩展）、`src/web.ts`（test-api 路由）、`src/index.ts`（apply(ctx,config) 接线）、`client/PolishButton.tsx`（菜单）、`client/index.tsx`（第三席位）、`client/i18n.ts`（20 键）、`client/ambient.d.ts`（plugin-manager 挂载）、`package.json`（三依赖）。

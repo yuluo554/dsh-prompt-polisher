@@ -82,7 +82,7 @@
 ## M5 验证命令实录（复跑即可复验）
 
 ```sh
-cd D:\ProgramData\zcode\dsh-2\dsh-prompt-polisher
+cd <repo>
 pnpm lint && pnpm test          # 双 tsc 0 错；71/71（含 bench 20 用例 golden 比对 + EOL 门 + locale 门 + 脱敏门）
 node scripts/desensitize-audit.mjs   # 单跑脱敏审计 → DESSENSITIZE_AUDIT_OK
 node scripts/update-golden.mjs       # （仅契约变更后）重生成 golden → git diff 应为空

@@ -4,7 +4,7 @@
 
 ## 当前进度（M1 已完成，2026-09-29）
 
-- 包形落地于 `D:\ProgramData\zcode\dsh-2\dsh-prompt-polisher\`：package.json 三件套（`dsh.bundle.patch` + host apply 默认导出 + `dsh.client`/`exports ./client`）、`cordis.patch.yml`（仅 insert 本插件行；workflow-ptc 翻转留 M2）、`scripts/build-client.mjs`（esbuild cjs + ModuleLoader banner/footer + require 白名单扫描门，实测 2 require sites / 2 externals）。
+- 包形落地于 `<repo>\`：package.json 三件套（`dsh.bundle.patch` + host apply 默认导出 + `dsh.client`/`exports ./client`）、`cordis.patch.yml`（仅 insert 本插件行；workflow-ptc 翻转留 M2）、`scripts/build-client.mjs`（esbuild cjs + ModuleLoader banner/footer + require 白名单扫描门，实测 2 require sites / 2 externals）。
 - host 半：`src/index.ts`（apply 无强制依赖，激活零门槛）+ `src/web.ts`（`POST /api/prompt-polisher/optimize`，requestBody buffered，挂为等待 `connection` 的子插件）+ `src/optimize.ts`（校验→echo 伪优化→meta 纯函数）。
 - client 半：`client/index.tsx`（inject `['slots','locale']`，注册 `conversation.input.right` 席位 id `prompt-polisher`）+ `PolishButton.tsx`（自绘笔尖+双星火临时图标；空草稿/非 plain phase/请求中禁用；点击 POST → `setDraft` 回填；会话切换 unmount abort）+ `api.ts` + `i18n.ts`（M1 最小 3 键 × zh/en）。
 - 实机验证全过（0.2.0-rc.1 实测）：`dsh plugin --profile web add ./dsh-prompt-polisher` → dump-config 1269 行插件行在 → 后台启动 0 条 "did not activate" 且 host 半日志出现 → cookie 认证下 curl RPC 成功臂/EMPTY_DRAFT/BAD_STYLE/未认证 401 全对 → UTF-8 草稿回显无损 → client bundle 进启动 combo（10.3MB、58 模块，`id: "dsh-prompt-polisher"` 在）。
@@ -48,7 +48,7 @@
 ## M1 验证命令实录（复跑即可复验）
 
 ```sh
-cd D:\ProgramData\zcode\dsh-2\dsh-prompt-polisher
+cd <repo>
 pnpm lint && pnpm test          # 11/11 全绿
 cd .. && dsh plugin --profile web add ./dsh-prompt-polisher   # 已装（link），改动后重跑
 dsh --profile web --dump-config | grep prompt-polisher        # 插件行 ~L1269
@@ -62,4 +62,4 @@ dsh --profile web --no-open --port 0 &                          # ~13s，日志 
 
 - 本项目 `plan/00-06`（重点 02 架构 / 03 详设 / 05 里程碑）+ `plan/HANDOFF-M1.md`（M1 决策上下文）。
 - skill：`dsh-plugin-dev`（必读全文，§4 引擎契约 / §6 测试桩形态 M2 直接用）、`ai-tool-project-sprint`（HANDOFF 先落盘再结束对话）。
-- 可运行参照：`D:\ProgramData\zcode\dsh-1\dsh-pipeline`（真实引擎测试 `test/real-engine.test.js` + 桩形态 M2 照抄）。
+- 可运行参照：`<dsh-pipeline-repo>`（真实引擎测试 `test/real-engine.test.js` + 桩形态 M2 照抄）。

@@ -65,7 +65,7 @@
 ## M2 验证命令实录（复跑即可复验）
 
 ```sh
-cd D:\ProgramData\zcode\dsh-2\dsh-prompt-polisher
+cd <repo>
 pnpm lint && pnpm test          # 双 tsc 0 错；44/44 全绿（real-engine 6 例 + bench 17 例）
 cd .. && dsh plugin --profile web add ./dsh-prompt-polisher   # 已装（link），改动后重跑
 dsh --profile web --dump-config | grep -A2 "id: workflow-ptc"  # 根层行无 disabled=翻转生效；tool-workflow 仍 disabled:true
@@ -82,5 +82,5 @@ dsh --profile web --no-open --port 0 &                          # ~13s，日志 
 
 - 本项目 `plan/00-06`（重点 02 架构 / 03 详设 / 05 里程碑）+ `plan/HANDOFF-M2.md`（M2 决策上下文）+ `plan/06` M2 决策行。
 - skill：`dsh-plugin-dev`（必读全文；§4 引擎契约 / §5 client 半 / §6 测试桩形态已在本包测试落形）。
-- 可运行参照：`D:\ProgramData\zcode\dsh-1\dsh-pipeline`（真实引擎测试桩形态、web 半 resolveAgent 先例、独立 API 可参考其 provider/config 组织）。
+- 可运行参照：`<dsh-pipeline-repo>`（真实引擎测试桩形态、web 半 resolveAgent 先例、独立 API 可参考其 provider/config 组织）。
 - 本包 M2 新文件速查：`src/limits.ts`（共享上限）、`src/templates.ts`、`src/scrub.ts`、`src/race.ts`、`src/dispatch.ts`（POLISH_SCRIPT/mapEngineResult/registry）、`src/engine-half.ts`、`client/store.ts`、`client/PolishBar.tsx`。

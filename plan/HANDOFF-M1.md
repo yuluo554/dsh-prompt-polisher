@@ -9,7 +9,7 @@
 - 可行性已用包源码核实（证据与结论见 plan/02）：
   - 按钮席位 `conversation.input.right`（list，提交动作前控件；备选 left/activity/overlay）；
   - 读草稿 `useInput().draft / draftRev`；写草稿 `inputActions.setDraft(text)`；
-  - 证据文件：`@deepseek-ai/dsh-client-ui-conversation/lib/types/client/contract/{slots,input,draft-editor,composer-submission}.d.ts`（本地副本在 `D:\ProgramData\zcode\dsh-1\dsh-pipeline\node_modules\@deepseek-ai\`，注意 pnpm 链接名后缀 `@` 是显示符号，真实路径走 `.pnpm` store）。
+  - 证据文件：`@deepseek-ai/dsh-client-ui-conversation/lib/types/client/contract/{slots,input,draft-editor,composer-submission}.d.ts`（本地副本在 `<dsh-pipeline-repo>\node_modules\@deepseek-ai\`，注意 pnpm 链接名后缀 `@` 是显示符号，真实路径走 `.pnpm` store）。
 
 ## M1 待办（DoD 见 plan/05 §M1）
 
@@ -43,7 +43,7 @@
 
 - 本项目 `plan/00-06`（重点 02 架构/03 详设/05 里程碑）。
 - skill：`dsh-plugin-dev`（必读全文）、`ai-tool-project-sprint`（阶段 0 纪律：HANDOFF 先落盘再结束对话）。
-- 可运行参照：`D:\ProgramData\zcode\dsh-1\dsh-pipeline`（构建脚本、测试三层、patch 形、workflow 引擎用法）；调研存档 `D:\ProgramData\zcode\dsh-1\dsh-plugin-research`（official-docs/0.2.0-rc.1）。
+- 可运行参照：`<dsh-pipeline-repo>`（构建脚本、测试三层、patch 形、workflow 引擎用法）；调研存档 `<dsh-plugin-research-repo>`（official-docs/0.2.0-rc.1）。
 
 ## 关键命令速查
 

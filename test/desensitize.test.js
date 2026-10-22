@@ -27,3 +27,26 @@ test('desensitize audit: working tree is clean (steps 1-3) and the script passes
   assert.match(stdout, /DESENSITIZE_AUDIT_OK/, 'the audit must reach its OK marker')
   assert.ok(!/allowlisted/.test(stdout), 'the allowlist is empty — a tolerated hit means an entry needs re-review')
 })
+
+/**
+ * T4 (2026-10-22): the personal-path regex was widened to catch
+ * `<drive>:\ProgramData\...`, which the original rule missed entirely
+ * (14 occurrences sat in the published repo while the audit printed OK).
+ * This test pins the *widening itself*: the audit script must go red on the
+ * new shapes and stay green on placeholders / system dirs / other people's
+ * build machines. Without it, a later "simplification" of the regex would
+ * silently restore the blind spot.
+ */
+test('desensitize audit: widened personal-path rule fires, and does not misfire', () => {
+  let stdout
+  try {
+    stdout = execFileSync(process.execPath, ['scripts/desensitize-audit-selftest.mjs'], {
+      cwd: ROOT,
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'pipe'],
+    })
+  } catch (error) {
+    assert.fail(`desensitize negative controls FAILED:\n${error.stdout ?? ''}${error.stderr ?? ''}`)
+  }
+  assert.match(stdout, /负控 13 项全部符合预期/, 'all 13 positive/negative controls must hold')
+})
